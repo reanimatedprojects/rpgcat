@@ -1,0 +1,27 @@
+# cp catalyst-rpgcat.service /etc/systemd/system/catalyst-rpgcat.service
+# Adjust the paths below as required
+# systemctl daemon-reload
+# systemctl enable catalyst-rpgcat
+# systemctl start catalyst-rpgcat
+
+[Unit]
+Description=RPGCat - Catalyst browser-based RPG
+# These should be adjusted if you're not using nginx as a frontend proxy
+After=nginx.service
+Wants=nginx.service
+
+[Service]
+Type=forking
+# Alter the path as required
+PIDFile=/home/rpgcat/rpgcat.pid
+User=rpgcat
+Group=rpgcat
+Restart=on-failure
+RestartSec=1s
+ExecStart=/home/rpgcat/local/exec /home/rpgcat/rpgcat/fastcgi.initd start
+ExecReload=/home/rpgcat/local/exec /home/rpgcat/rpgcat/fastcgi.initd stop
+ExecStop=/home/rpgcat/local/exec /home/rpgcat/rpgcat/fastcgi.initd stop
+EnvironmentFile=/home/rpgcat/rpgcat/environment.conf
+
+[Install]
+WantedBy=multi-user.target
