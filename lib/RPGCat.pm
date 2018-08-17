@@ -34,6 +34,8 @@ extends 'Catalyst';
 
 our $VERSION = '0.01';
 
+use YAML;
+
 use DBIx::Class::DeploymentHandler;
 
 # Configure the application.
@@ -108,6 +110,17 @@ __PACKAGE__->config(
         msg_types => [ qw(status error success) ],
         success_msg_stash_key => 'success_msg',
     }
+);
+
+## Note: If the pages.yml file is broken YAML, the entire app will fail.
+## This is intentional since without a valid pages.yml, menu items and
+## other things will be messed up.
+__PACKAGE__->config(
+    'RPGCat' => {
+        pages => YAML::LoadFile(
+            __PACKAGE__->config->{ home } . '/data/pages.yaml',
+        ),
+    },
 );
 
 # Start the application

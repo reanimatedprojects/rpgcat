@@ -57,8 +57,20 @@ sub default :Path {
 sub auto :Private {
     my ($self, $c) = @_;
 
+    # The final page config is added to the stash so that the page
+    # can display menus etc correctly in the wrapper.
+    my $page_config_href = mkpage($c->request->path);
+
+    $c->stash(
+        fn_mkpage => \&mkpage,
+        page_config => $page_config_href,
+    );
+
     # Load the status messages into the stash
     $c->load_status_msgs;
+
+    # If authenticated, don't cache any page content!
+    $c->response->header('Cache-Control' => 'no-cache') if ($c->user_exists);
 
     return 1;
 }
@@ -70,6 +82,36 @@ Attempt to render a view, if needed.
 =cut
 
 sub end : ActionClass('RenderView') {}
+
+sub mkpage :Private {
+    my $path_to_process = shift;
+
+    my $pages = RPGCat->config->{ RPGCat }{ pages };
+
+    $path_to_process =~ s#^/##;
+    my @parts = split '/', $path_to_process;
+
+    # Iterate through the path parts loading the least specific first,
+    # gradually adding more specific values (which overwrite less-
+    # specific values)
+    my %page_config = (
+        href => "/$path_to_process",
+    );
+    my $path = "";
+    # This should always exist unless someone removed all the defaults.
+    if (exists $pages->{ "/" }) {
+        $page_config{$_} = $pages->{ "/" }{ $_ } foreach (keys %{$pages->{ "/" }});
+    }
+    foreach my $p (@parts) {
+        $path .= "/$p";
+        next unless (exists $pages->{ $path });
+        foreach my $k (keys %{$pages->{ $path }}) {
+            $page_config{$k} = $pages->{ $path }{ $k };
+        }
+    }
+    return \%page_config;
+}
+
 
 =head1 AUTHOR
 

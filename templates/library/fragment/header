@@ -1,0 +1,4 @@
+<div class="container">
+    <h1>Header</h1>
+</div>
+[% PROCESS "fragment/menu" %]

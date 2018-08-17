@@ -1,0 +1,47 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="/"><img alt="" src="/static/images/logo30.png" width="30" height="30"> [% c.config.name ## RPGCat branding name %]</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+
+[%- IF page_config.logged_out_menu AND NOT c.user_exists;
+        menu = page_config.logged_out_menu;
+    ELSE;
+        menu = page_config.menu;
+    END;
+
+    FOR p IN menu;
+        # Swap login for logout (shouldn't be needed since logged_out is potentially different menu)
+        # IF p == '/login' AND c.user_exists; p = '/logout'; END;
+
+        SET p_info = fn_mkpage(p);
+        # Hide menus that require a particular role
+        IF c.user_exists AND p_info;
+            NEXT IF p_info.role AND NOT c.check_user_roles(p_info.role);
+        END;
+        IF p_info.submenu -%]
+    <li class="nav-item dropdown">
+[%# FIXME: The id below needs to be unique - convert url to an id-compatible name? %]
+        <a class="nav-link dropdown-toggle" href="#" id="navBarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">[% p_info.menu_title OR p_info.name %]</a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+[%          FOR sp IN p_info.submenu; SET p2_info = fn_mkpage(sp);
+                IF p2_info.divider %]
+            <div class="dropdown-divider"></div>
+            [%- ELSE -%]
+            <a class="dropdown-item[% IF page_config.href == p2_info.href; ' active'; END %]" href="[% p2_info.href %]">[% p2_info.menu_title OR p2_info.name %]</a>
+            [% END;
+            END %]
+        </div>
+    </li>
+[%-     ELSE -%]
+    <li class="nav-item[% IF page_config.href == p_info.href; ' active'; END; %]">
+        <a class="nav-link" href="[% p_info.href %]">[% p_info.menu_title OR p_info.name %] [% IF page_config.href == p_info.href; ' <span class="sr-only">(current)</span>'; END; # This is for screen readers %]</a>
+    </li>
+[%-     END;
+    END; # IN menu -%]
+    </ul>
+  </div>
+</nav>
