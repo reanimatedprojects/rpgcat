@@ -5,7 +5,7 @@ We're really glad you're reading this, because we need volunteers to help with t
 Here are some important resources:
 
   * Our company website - [Reanimated Projects and Games](http://www.reanimated.co.uk/)
-  * Discord server - come find us on [Discord](https://discordapp.com/). Our server invite code is VnYC7es - there should be a button to create/join a new server. Simply click the button, choose Join and enter this code to add our server to your account.
+  * Discord server - come find us on [Discord](https://discordapp.com/). Our server invite code is MeSscUG - there should be a button to create/join a new server. Simply click the button, choose Join and enter this code to add our server to your account.
   * Enter them as [GitHub Issues](https://github.com/rpgwnn/rpgcat/issues). Not sure if it's a bug? Talk to us on Discord first or create a detailed issue and we'll let you know if it's not a bug.
 
 ## Testing
