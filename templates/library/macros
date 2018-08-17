@@ -1,0 +1,21 @@
+[%-
+######################################################################
+# Standard Macros that are available on all pages (including emails)
+
+
+
+
+    page = {
+        js_files    = [ ],
+        css_files   = [ ],
+    };
+
+    # page.title defaults to the title from pages.yml
+    IF page_config.title AND NOT page.title;
+        page.title = page_config.title;
+    END;
+    IF page_config.name AND NOT page.title;
+        page.title = page_config.name;
+    END;
+
+ -%]

@@ -1,40 +1,49 @@
 <!DOCTYPE html>
- <html lang="en">
+ <html lang="en" class="bg-dark">
 <head>
-<meta charset="utf-8">
-<title>[% SET ptitle = page.title; DEFAULT ptitle = 'RPGWNN'; ptitle | html %]</title>
-<link rel="stylesheet" type="text/css" href="/css/rpgwnn.css" />
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>[% SET ptitle = page.title OR page_config.name; DEFAULT ptitle = 'RPGWNN'; ptitle | html %]</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/rpgwnn.css" />
 [% FOREACH css IN page.css_files;
     IF NOT css.search('^https?://') AND NOT css.search('^/');
-        css = "/css/" _ css;
+        css = "/static/css/" _ css;
     END -%]<link rel="stylesheet" type="text/css" href="[% css %]" />[% END -%]
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!--[if lt IE 9]><script src="/js/html5shiv.min.js"></script><![endif]-->
+    <!-- icons -->
+    <link rel="icon" href="/static/images/site_icon_16x16.png" sizes="16x16" />
+    <link rel="icon" href="/static/images/site_icon_32x32.png" sizes="32x32" />
+    <link rel="icon" href="/static/images/site_icon_192x192.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="/static/images/site_icon_180x180.png">
 
 [% IF page.extra_head_html; page.extra_head_html; END -%]
 </head>
-<body>
+<body role="document" class="bg-light">
 
-[% PROCESS "header.inc" %]
+[% PROCESS "fragment/header" %]
+[%- IF page.banner_html; page.banner_html; END -%]
+
+<div class="container" role="main">
 
 [% IF status_msg OR error_msg OR success_msg -%]
-<div class="status_container">
-[% IF status_msg %]<div class="status_message">[% status_msg %]</div>[% END %]
-[% IF error_msg %]<div class="status_message error">[% error_msg %]</div>[% END %]
-[% IF success_msg %]<div class="status_message success">[% success_msg %]</div>[% END %]
-</div>
+[% IF status_msg %]<div class="alert alert-primary">[% status_msg %]</div>[% END %]
+[% IF error_msg %]<div class="alert alert-danger">[% error_msg %]</div>[% END %]
+[% IF success_msg %]<div class="alert alert-success">[% success_msg %]</div>[% END %]
 [% END -%]
 
 [% content %]
 
-[% PROCESS "footer.inc" %]
+</div>
+[% PROCESS "fragment/footer" UNLESS page_config.skip_footer; %]
 
-<script type="text/javascript" src="/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="/static/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
 [% FOREACH js IN page.js_files;
     IF NOT js.search('^http') AND NOT js.search('^/');
-        js = "/js/" _ js;
+        js = "/static/js/" _ js;
     END
 -%]<script type="text/javascript" src="[% js %]"></script>
 [%- END;

@@ -1,0 +1,45 @@
+#!/usr/bin/env perl
+
+use warnings;
+use strict;
+use Daemon::Control;
+
+my $app_home = $ENV{HOME} . '/rpgcat';
+# Hopefully this will be something like /home/rpgcat/local/perl-5.24.1/bin/perl
+# Earlier versions of perl would simply return 'perl'
+my $perl     = $^X;
+my $program  = $app_home . '/script/rpgcat_fastcgi.pl';
+my $name     = 'RPGCat';
+my $workers  = 1;
+my $pid_file = $ENV{HOME} . '/rpgcat.pid';
+# nginx fastcgi over socket
+my $socket   = $app_home . '/rpgcat.socket';
+# Apache fastcgi over tcp
+# $socket = "127.0.0.1:3000";
+# Default is over file-based socket, set the SOCKET env to change to TCP
+if ($ENV{SOCKET}) {
+    $socket = $ENV{SOCKET};
+}
+
+exit Daemon::Control->new({
+    name        => $name,
+    lsb_start   => '$nginx',
+    lsb_stop    => '$nginx',
+    lsb_sdesc   => "$name",
+    lsb_desc    => "$name - Catalyst brower-based RPG",
+    path        => $app_home . '/fastcgi.initd',
+
+    user        => 'rpgcat',
+    group       => 'rpgcat',
+    directory   => $app_home,
+    program     => "$perl $program --nproc $workers --listen $socket",
+
+    init_config => $ENV{HOME} . '/local/bin/localenv-bashrc',
+
+    pid_file    => $pid_file,
+    kill_timeout => 10,
+    stderr_file => $ENV{HOME} . '/rpgcat.out',
+    stdout_file => $ENV{HOME} . '/rpgcat.out',
+
+    fork        => 2,
+})->run;

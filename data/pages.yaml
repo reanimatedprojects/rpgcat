@@ -1,0 +1,44 @@
+# All the entries under /: apply to everything on the site
+# assuming that they're not replaced with a more specific
+# entry further down
+/:
+    name: Home
+    js_files:
+    css_files:
+    menu:
+        - /account
+        - /logout
+    logged_out_menu:
+        - /about
+        - /login
+#
+# name: default page title if not set within template (page.title)
+# menu_title: used within the menu only
+# submenu: used to create a dropdown menu
+# menu: top-level menu
+# logged_out_menu: top-level menu when not logged in
+#
+# these are defined as page_config.X within templates
+#
+/login:
+    name: Login
+/logout:
+    name: Logout
+#
+# Static pages
+#
+/about:
+    name: About RPGCat
+    menu_title: About RPGCat
+    wrapper: bogus
+#
+# Logged in
+#
+/account:
+    name: Your Account
+    menu_title: Account
+    skip_footer: 1
+/character:
+    name: Character
+/character/create:
+    name: Character Creation
