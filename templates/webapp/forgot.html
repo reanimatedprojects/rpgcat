@@ -1,18 +1,30 @@
-[% page.title = "Reset your password" -%]
+[% page.title = "Reset your password";
+    extra_js = BLOCK -%]
+<script type="text/javascript">
+$(document).ready(function(){
+    $("input#email").focus();
+});
+</script>
+[%- END; page.extra_footer_html = page.extra_footer_html _ extra_js %]
+<div class="container">
+<div class="row text-sm-left text-md-left">
+
+<div class="col-12 col-md-6 p-3">
 
 <h1>Reset password</h1>
 
 <form method="post" action="/forgot">
-  <table>
-    <tr>
-      <td>Email:</td>
-      <td><input type="email" name="email" size="40" required /></td>
-    </tr>
-    <tr>
-      <td colspan="2"><input class="bttn" type="submit" name="submit" value="Request reset" /></td>
-    </tr>
-  </table>
+<div class="form-group">
+<label for="email">Email</label>
+<input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required />
+</div>
+<button class="btn btn-primary" type="submit">Request reset</button>
 </form>
+</div>
 
+<div class="col-12 col-md-6 p-3">
 <p>Not got an account? <a href="/signup">Sign up</a></p>
 <p>Remembered your password? <a href="/login">Login</a></p>
+</div>
+</div>
+</div>
