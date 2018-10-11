@@ -1,0 +1,12 @@
+{
+    "renderer": "TT",
+    "header": [
+        { "From": "RPGCat <rpgcat@example.com>" },
+        { "Subject": "Account verification" },
+        { "To": "[% destination_email %]" }
+    ],
+    "alternatives": [
+        { "type": "text/plain", "path": "body.txt" },
+        { "type": "text/html", "path": "body.html" }
+    ]
+}

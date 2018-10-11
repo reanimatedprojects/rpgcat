@@ -29,7 +29,7 @@ sub login_index :Path("/login") Args(0) {
     if ($email && $password) {
 
         # Default location after login
-        $c->response->redirect("/");
+        $c->response->redirect("/account");
 
         # Attempt to log the user in
         if ($c->authenticate({
@@ -129,11 +129,56 @@ sub signup :Path("/signup") Args(0) {
         # of point!
 
         # FIXME: Send email to $email
+        my $exists = eval {
+            $c->model('DB::Account')->search({ email => $email });
+        };
+        if ($@ || ! defined $exists) {
+            # Something went seriously wrong, we should tell the user.
+            $c->log->debug("Couldn't create account for $email, but couldn't find one either");
 
+            $c->response->redirect(
+                $c->uri_for("/login", {
+                    mid => $c->set_error_msg(
+                        "An error occurred creating your account."
+                    )
+                })
+            );
+            $c->detach();
+
+        } else {
+            my $account = $exists->single();
+
+            my $emkit = $c->model('EMKit', transport_class => 'Email::Sender::Transport::Sendmail')
+                ->template("verification-exists.mkit", {
+                    destination_email => $account->email,
+                    account => $account,
+                    config_url  => $c->uri_for('/'),
+                    config_name => $c->config->{ name },
+                    email => $account->email,
+                })
+                ->to( $account->email );
+
+            #$c->log->debug("Email:\n" . $emkit->_email->as_string );
+            $emkit->send();
+        }
     } else {
 
         # FIXME: Send verification email to $email asking user to confirm
         # their email address (note - this does not log them in!)
+
+        my $emkit = $c->model('EMKit', transport_class => 'Email::Sender::Transport::Sendmail')
+            ->template("verification-new.mkit", {
+                destination_email => $email,
+                account => undef,
+                config_url  => $c->uri_for('/'),
+                config_name => $c->config->{ name },
+
+                email => $account->email,
+            })
+            ->to( $account->email );
+
+        #$c->log->debug("Email:\n" . $emkit->_email->as_string );
+        $emkit->send();
     }
 
     # Now we redirect to the login page. If it was a new account, they'll
