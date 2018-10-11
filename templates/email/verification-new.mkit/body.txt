@@ -1,0 +1,8 @@
+Hi [% destination_email %]
+
+Someone just created an account at [% config_name %] for the email address [% destination_email %].
+
+If this was you, use the link [% config_url %]/verify/$token to confirm your email address.
+
+If this wasn't you, simply ignore this email and the account will remain unverified or else reply to this email and let us know that it's not you so we can suspend it.
+

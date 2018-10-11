@@ -1,0 +1,10 @@
+{
+    "renderer": "TT",
+    "header": [
+        { "Subject": "Verify your account" }
+    ],
+    "alternatives": [
+        { "type": "text/plain", "path": "body.txt" },
+        { "type": "text/html", "path": "body.html" }
+    ]
+}
