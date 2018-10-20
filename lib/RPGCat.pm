@@ -82,6 +82,21 @@ __PACKAGE__->config(
             },
         },
     },
+
+    'Model::Hashids' => {
+        args => {
+            # Use this to shuffle the characters used a bit more.
+            # Put this into rpgcat.yaml file to change it instead of changing this file
+            #   Model::Hashids:
+            #       args:
+            #           salt: some random string goes here
+            salt => 'limitation on salt is less than alphabet length',
+            minHashLength => 4,  # minimum length, because a 2 character id isn't long enough
+            # Use this alphabet to avoid confusing characters such as 0/o/O and 1/I/l
+            alphabet => 'abcdefghkmnpqrstuvwxyzABCDEFGHKLMNPQRSTUVWXYZ23456789',
+        },
+    },
+
 );
 
 # Default view for pages

@@ -212,8 +212,8 @@ sub forgot :Path("/forgot") Args(0) {
     # Not a form submission, just the GET so show the form.
     unless ($email) { $c->detach(); }
 
-    # Tell the user we're doing something.
-    $c->stash( success_msg => "An email is being sent with instructions." );
+    # Message to tell the user we're doing something.
+    my $success_msg = "An email is being sent with instructions.";
 
     # Find the account by email address
     my $account = eval {
@@ -221,6 +221,7 @@ sub forgot :Path("/forgot") Args(0) {
     };
     if ($@ || ! defined $account) {
         # Something went wrong, or we didn't find the user account
+# {{{
         $c->log->debug("No user found for $email");
 
         my $emkit = $c->model('EMKit',
@@ -234,23 +235,117 @@ sub forgot :Path("/forgot") Args(0) {
             ->to( $email );
         $emkit->send();
 
+        # Redirect to login page, reload won't (pretend to) send another email
+        $c->response->redirect(
+            $c->uri_for("/login", {
+                mid => $c->set_status_msg($success_msg)
+            })
+        );
         $c->detach();
-    } else {
-        $c->log->debug("User found " . $account->account_id );
+# }}}
+    } elsif (! $account->active) {
+        # Check for active status - suspended account
+# {{{
         my $emkit = $c->model('EMKit',
-                transport_class => 'Email::Sender::Transport::Sendmail')
-            ->template("forgotten-exists.mkit", {
-                destination_email => $account->email,
+                transport_class => 'Email::Sender::Transport::Sendmail');
+        $emkit = $emkit->template("forgotten-suspended.mkit", {
+                destination_email => $email,
                 account => $account,
-                config_url  => $c->uri_for('/'),
+                config_url => $c->uri_for('/'),
                 config_name => $c->config->{ name },
             })
-            ->to( $account->email );
+            ->to($email);
         $emkit->send();
 
+        # Redirect to login page, reload won't send another email
+        $c->response->redirect(
+            $c->uri_for("/login", {
+                mid => $c->set_status_msg($success_msg)
+            })
+        );
+        $c->detach();
+# }}}
+    }
+
+    # Active account - generate token and mail the user
+# {{{
+    my $tokens_rs = $c->model('DB::ResetToken');
+
+    # When creating a reset token, all others for this account
+    # should be invalidated.
+    $tokens_rs->search({ account_id => $account->account_id })->delete();
+
+    my $token = $tokens_rs->create({
+        client_ip => $c->request->address,
+        account_id => $account->account_id,
+        email => $account->email,
+    });
+
+    my $token_value = Digest::SHA::sha256_hex(
+        $token->date_issued,
+        $token->client_ip,
+        $token->account_id,
+        $token->email,
+        # Include the account password hash so changing the password
+        # invalidates all previous tokens
+        $account->password,
+    );
+    # Store the hashed token in the db.
+    $token->token($token_value);
+    $token->update();
+
+    my $hashid = $c->model('Hashids')->encode( $token->reset_token_id );
+    my $reset_link = $c->uri_for("/reset", {
+        t => $token_value, i => $hashid
+    });
+
+    $c->log->debug("User found " . $account->account_id . " token $token_value id $hashid");
+    my $emkit = $c->model('EMKit',
+            transport_class => 'Email::Sender::Transport::Sendmail')
+        ->template("forgotten-exists.mkit", {
+            destination_email => $account->email,
+            account => $account,
+            config_url  => $c->uri_for('/'),
+            config_name => $c->config->{ name },
+            reset_url => $reset_link,
+        })
+        ->to( $account->email );
+    $emkit->send();
+
+    # Redirect to login page, reload won't send another email
+    $c->response->redirect(
+        $c->uri_for("/login", {
+            mid => $c->set_status_msg($success_msg)
+        })
+    );
+    $c->detach();
+# }}}
+}
+
+=head2 reset
+
+This is the password reset page, requires t=$token and i=$id as params
+
+=cut
+
+sub reset :Path("/reset") Args(0) {
+    my ($self, $c) = @_;
+    $c->stash( template => "reset.html" );
+
+    my $params = $c->request->params;
+    unless (exists $params->{ t } && exists $params->{ i }) {
+        # If there is no token or id parameter, just show the page which
+        # asks for the user to enter the values.
+
+        # FIXME: We should probably display them separately in the email
+        # FIXME: as well as just in the link.
+
+        $c->stash( params => $params );
         $c->detach();
     }
+
 }
+
 
 =encoding utf8
 

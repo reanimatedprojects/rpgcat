@@ -134,6 +134,13 @@ __PACKAGE__->add_columns(
         set_on_update => 0,
         datetime_undef_if_invalid => 1,
     },
+
+    "active" => {
+        data_type => "int",
+        size => 1,
+        is_nullable => 0,
+        default_Value => 1,
+    },
 );
 
 =head1 PRIMARY KEY

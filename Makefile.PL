@@ -35,6 +35,8 @@ requires 'Catalyst::Plugin::Session';
 requires 'Catalyst::Plugin::Session::State::Cookie';
 requires 'Catalyst::Plugin::Session::Store::DBI';
 
+requires 'Catalyst::Restarter';
+
 requires 'DBIx::Class::Schema::Loader';
 requires 'DBIx::Class::TimeStamp';
 requires 'DBIx::Class::PassphraseColumn';
@@ -55,6 +57,8 @@ requires 'Email::Sender::Simple';
 requires 'Email::MIME::Kit::Renderer::TT';
 
 requires 'HTML::FormHandler';
+
+requires 'Hashids';
 
 install_script glob('script/*.pl');
 auto_install;

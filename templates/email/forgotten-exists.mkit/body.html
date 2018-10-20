@@ -2,6 +2,7 @@
 
 <p>Someone is trying to recover the [% config_name %] password for [% destination_email %].</p>
 
-<p>If this wasn't you, simply ignore this email.</p>
+<p>If this was you, use the link <a href="[% reset_url %]">[% reset_url %]</a> to reset it.</p>
 
-<p>If this was you, use the link <a href="[% config_url %]/recover/$token">[% config_url %]/recover/$token</a> to reset it.</p>
+<p>If this wasn't you, either ignore this email or use this link <a href="[% reset_url _ "&x=1" %]">[% reset_url _ "&x=1" %]</a> to invalidate it.</p>
+
