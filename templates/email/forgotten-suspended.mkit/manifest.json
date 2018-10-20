@@ -1,0 +1,10 @@
+{
+    "renderer": "TT",
+    "header": [
+        { "Subject": "Password recovery for [% destination_email %]" }
+    ],
+    "alternatives": [
+        { "type": "text/plain", "path": "body.txt" },
+        { "type": "text/html", "path": "body.html" }
+    ]
+}

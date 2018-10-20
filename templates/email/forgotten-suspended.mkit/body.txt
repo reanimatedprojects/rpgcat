@@ -1,0 +1,6 @@
+Hi [% destination_email %]
+
+Someone is trying to recover the [% config_name %] password for [% destination_email %].
+
+Unfortunately your account has been suspended so you'll need to contact us to get this resolved. Please visit [% config_name %] at [% config_url %] and check the contact page to find a suitable way to get in touch.
+

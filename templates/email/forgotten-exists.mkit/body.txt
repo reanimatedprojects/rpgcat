@@ -2,6 +2,7 @@ Hi [% destination_email %]
 
 Someone is trying to recover the [% config_name %] password for [% destination_email %].
 
-If this wasn't you, simply ignore this email.
+If this was you, use the link [% reset_url %] to reset it.
 
-If this was you, use the link [% config_url %]/recover/$token to reset it.
+If this wasn't you, either ignore this email or use this link [% reset_url _ "&x=1" %] to invalidate the request.
+
