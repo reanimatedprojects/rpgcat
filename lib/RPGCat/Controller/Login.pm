@@ -281,15 +281,20 @@ sub forgot :Path("/forgot") Args(0) {
         email => $account->email,
     });
 
+
+    my $hash_this = join "", $token->date_issued->iso8601, $token->client_ip, $token->account_id, $token->email, $account->password->as_rfc2307;
+    $c->log->debug("Hash: $hash_this");
+
     my $token_value = Digest::SHA::sha256_hex(
-        $token->date_issued,
+        $token->date_issued->iso8601,
         $token->client_ip,
         $token->account_id,
         $token->email,
         # Include the account password hash so changing the password
         # invalidates all previous tokens
-        $account->password,
+        $account->password->as_rfc2307,
     );
+
     # Store the hashed token in the db.
     $token->token($token_value);
     $token->update();
@@ -333,17 +338,134 @@ sub reset :Path("/reset") Args(0) {
     $c->stash( template => "reset.html" );
 
     my $params = $c->request->params;
-    unless (exists $params->{ t } && exists $params->{ i }) {
-        # If there is no token or id parameter, just show the page which
-        # asks for the user to enter the values.
+    my $reset_id = $c->model('Hashids')->decode( $params->{ i } || "");
+    my $hash = $params->{ t } || "";
 
-        # FIXME: We should probably display them separately in the email
-        # FIXME: as well as just in the link.
+    my $error_msg = "Recovery token expired, invalid or not found.";
 
-        $c->stash( params => $params );
+    # If there is no token or id parameter, redirect to forgot page
+    unless ($reset_id && $hash) {
+        $c->log->debug("No reset id ($reset_id)  or hash ($hash)") if $c->debug;
+        $c->response->redirect(
+            $c->uri_for("/forgot", {
+                mid => $c->set_error_msg($error_msg),
+            })
+        );
         $c->detach();
     }
 
+    my $token = $c->model('DB::ResetToken')->find( $reset_id );
+    # Token wasn't found.
+    unless ($token) {
+        $c->log->debug("No token found for reset id $reset_id") if $c->debug;
+        $c->response->redirect(
+            $c->uri_for("/forgot", {
+                mid => $c->set_error_msg($error_msg),
+            })
+        );
+        $c->detach();
+    }
+
+    my $hash_this = join "", $token->date_issued->iso8601, $token->client_ip, $token->account_id, $token->email, $token->account->password->as_rfc2307;
+    $c->log->debug("Hash: $hash_this");
+    my $token_value = Digest::SHA::sha256_hex(
+        $token->date_issued->iso8601,
+        $token->client_ip,
+        $token->account_id,
+        $token->email,
+        $token->account->password->as_rfc2307,
+    );
+
+    # Hash didn't match - the values above should be the
+    # same as the ones in the forgotten password page.
+    unless ($hash eq $token_value) {
+        $c->log->debug("Hash mismatch with $token_value") if $c->debug;
+        $c->response->redirect(
+            $c->uri_for("/forgot", {
+                mid => $c->set_error_msg($error_msg),
+            })
+        );
+        $c->detach();
+    }
+
+    # Token expired, was issued more than 48h ago
+    if ($token->date_issued->epoch < time() - 86400*2) {
+        $c->log->debug("Expired, issued: " . $token->date_issued) if $c->debug;
+        $token->delete();
+        $c->response->redirect(
+            $c->uri_for("/forgot", {
+                mid => $c->set_error_msg($error_msg),
+            })
+        );
+        $c->detach();
+    }
+
+    # the 'x' parameter deletes the token instantly.
+    if (exists $params->{ x } && $params->{ x }) {
+        $token->delete();
+        $c->response->redirect(
+            $c->uri_for("/login", {
+                mid => $c->set_status_msg("Password reset process cancelled."),
+            })
+        );
+        $c->detach();
+    }
+
+    ## Store the user in the stash
+    my $account = $token->account;
+    $c->stash(
+        account => $account,
+        params => {
+            i => $c->model('Hashids')->encode( $reset_id ),
+            t => $hash,
+        }
+    );
+
+    # Prompt for new password if not provided
+    unless ($params->{ new_password } && $params->{ new_password2 }) {
+        $c->log->debug("Need a new password") if $c->debug;
+        $c->detach();
+    }
+
+    # Passwords don't match
+    if ($params->{ new_password } ne $params->{ new_password2 }) {
+        $c->response->redirect(
+            $c->uri_for("/reset", {
+                t => $params->{ t },
+                i => $params->{ i },
+                mid => $c->set_error_msg("New passwords do not match")
+            })
+        );
+        $c->detach();
+    }
+
+    # Suspended account - don't allow the reset
+    # This will only be triggered if the account was disabled between
+    # requesting the password link and using it.
+    unless ($account->active) {
+        $c->response->redirect(
+            $c->uri_for("/login", {
+                mid => $c->set_status_msg("Account suspended - please contact us"),
+            })
+        );
+        $c->detach();
+    }
+
+    $account->password( $params->{ new_password } );
+    # Always use UTC - it saves a lot of confusion
+    $account->date_last_password_change( $account->result_source->resultset->utc_now );
+    $account->update();
+
+    # FIXME: Best Practice: We should send a notification that the password has been reset.
+
+    $token->delete();
+
+    $c->response->redirect(
+        $c->uri_for("/login", {
+            mid => $c->set_success_msg( "Password changed" ),
+        })
+    );
+    $c->detach();
 }
 
 

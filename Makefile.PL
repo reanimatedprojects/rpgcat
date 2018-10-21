@@ -41,6 +41,7 @@ requires 'DBIx::Class::Schema::Loader';
 requires 'DBIx::Class::TimeStamp';
 requires 'DBIx::Class::PassphraseColumn';
 requires 'DBIx::Class::InflateColumn::Serializer';
+requires 'DBIx::Class::Helper::ResultSet::DateMethods1';
 requires 'Catalyst::Helper::Model::DBIC::Schema';
 requires 'MooseX::NonMoose';
 requires 'DBD::mysql';
