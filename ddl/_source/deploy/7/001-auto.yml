@@ -1,0 +1,1171 @@
+---
+schema:
+  procedures: {}
+  tables:
+    account_roles:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - account_id
+            - role_id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - account_id
+          match_type: ''
+          name: account_roles_fk_account_id
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - account_id
+          reference_table: accounts
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - role_id
+          match_type: ''
+          name: account_roles_fk_role_id
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields:
+            - role_id
+          reference_table: roles
+          type: FOREIGN KEY
+      fields:
+        account_id:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: account_id
+          order: 1
+          size:
+            - 0
+        role_id:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: role_id
+          order: 2
+          size:
+            - 0
+      indices:
+        - fields:
+            - account_id
+          name: account_roles_idx_account_id
+          options: []
+          type: NORMAL
+        - fields:
+            - role_id
+          name: account_roles_idx_role_id
+          options: []
+          type: NORMAL
+      name: account_roles
+      options: []
+      order: 10
+    accounts:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - account_id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - email
+          match_type: ''
+          name: email
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: UNIQUE
+      fields:
+        account_id:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: account_id
+          order: 1
+          size:
+            - 0
+        active:
+          data_type: int
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: active
+          order: 8
+          size:
+            - 1
+        date_last_password_change:
+          data_type: datetime
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: date_last_password_change
+          order: 7
+          size:
+            - 0
+        date_lastlogin:
+          data_type: datetime
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: date_lastlogin
+          order: 6
+          size:
+            - 0
+        date_signup:
+          data_type: datetime
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: date_signup
+          order: 4
+          size:
+            - 0
+        date_verified:
+          data_type: datetime
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: date_verified
+          order: 5
+          size:
+            - 0
+        email:
+          data_type: char
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 1
+          name: email
+          order: 2
+          size:
+            - 128
+        password:
+          data_type: text
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: password
+          order: 3
+          size:
+            - 0
+      indices: []
+      name: accounts
+      options: []
+      order: 1
+    characters:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - character_id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - character_name
+          match_type: ''
+          name: character_name
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: UNIQUE
+        - deferrable: 1
+          expression: ''
+          fields:
+            - account_id
+          match_type: ''
+          name: characters_fk_account_id
+          on_delete: CASCADE
+          on_update: CASCADE
+          options: []
+          reference_fields:
+            - account_id
+          reference_table: accounts
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - map_x
+            - map_y
+            - map_z
+          match_type: ''
+          name: characters_fk_map_x_map_y_map_z
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields:
+            - map_x
+            - map_y
+            - map_z
+          reference_table: maps
+          type: FOREIGN KEY
+      fields:
+        account_id:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: account_id
+          order: 3
+          size:
+            - 0
+        character_ap:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: character_ap
+          order: 7
+          size:
+            - 0
+        character_exp:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: character_exp
+          order: 5
+          size:
+            - 0
+        character_health:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: character_health
+          order: 4
+          size:
+            - 0
+        character_id:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: character_id
+          order: 1
+          size:
+            - 0
+        character_max_ap:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: character_max_ap
+          order: 6
+          size:
+            - 0
+        character_name:
+          data_type: char
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 1
+          name: character_name
+          order: 2
+          size:
+            - 32
+        map_x:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 0
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: map_x
+          order: 8
+          size:
+            - 0
+        map_y:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 0
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: map_y
+          order: 9
+          size:
+            - 0
+        map_z:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 0
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: map_z
+          order: 10
+          size:
+            - 0
+      indices:
+        - fields:
+            - account_id
+          name: characters_idx_account_id
+          options: []
+          type: NORMAL
+        - fields:
+            - map_x
+            - map_y
+            - map_z
+          name: characters_idx_map_x_map_y_map_z
+          options: []
+          type: NORMAL
+      name: characters
+      options: []
+      order: 11
+    inventories:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - character_id
+            - item_id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - character_id
+          match_type: ''
+          name: inventories_fk_character_id
+          on_delete: CASCADE
+          on_update: ''
+          options: []
+          reference_fields:
+            - character_id
+          reference_table: characters
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - item_id
+          match_type: ''
+          name: inventories_fk_item_id
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields:
+            - item_id
+          reference_table: items
+          type: FOREIGN KEY
+      fields:
+        character_id:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: character_id
+          order: 1
+          size:
+            - 0
+        item_id:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: item_id
+          order: 2
+          size:
+            - 0
+        item_quantity:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: item_quantity
+          order: 3
+          size:
+            - 0
+      indices:
+        - fields:
+            - character_id
+          name: inventories_idx_character_id
+          options: []
+          type: NORMAL
+        - fields:
+            - item_id
+          name: inventories_idx_item_id
+          options: []
+          type: NORMAL
+      name: inventories
+      options: []
+      order: 12
+    items:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - item_id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+      fields:
+        item_data:
+          data_type: mediumtext
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: item_data
+          order: 4
+          size:
+            - 0
+        item_id:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: item_id
+          order: 1
+          size:
+            - 0
+        item_name:
+          data_type: char
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: item_name
+          order: 2
+          size:
+            - 32
+        item_type:
+          data_type: char
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: item_type
+          order: 3
+          size:
+            - 32
+      indices: []
+      name: items
+      options: []
+      order: 2
+    maps:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - map_id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - map_x
+            - map_y
+            - map_z
+          match_type: ''
+          name: map_coords
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: UNIQUE
+      fields:
+        map_id:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: map_id
+          order: 1
+          size:
+            - 0
+        map_x:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 0
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 1
+          name: map_x
+          order: 2
+          size:
+            - 0
+        map_y:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 0
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 1
+          name: map_y
+          order: 3
+          size:
+            - 0
+        map_z:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 0
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 1
+          name: map_z
+          order: 4
+          size:
+            - 0
+        name:
+          data_type: char
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: name
+          order: 6
+          size:
+            - 64
+        tile_type_id:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 0
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: tile_type_id
+          order: 5
+          size:
+            - 0
+      indices: []
+      name: maps
+      options: []
+      order: 3
+    reset_tokens:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - reset_token_id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - token
+          match_type: ''
+          name: reset_tokens_token
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: UNIQUE
+        - deferrable: 1
+          expression: ''
+          fields:
+            - account_id
+          match_type: ''
+          name: reset_tokens_fk_account_id
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields:
+            - account_id
+          reference_table: accounts
+          type: FOREIGN KEY
+      fields:
+        account_id:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: account_id
+          order: 5
+          size:
+            - 0
+        client_ip:
+          data_type: char
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: client_ip
+          order: 4
+          size:
+            - 45
+        date_issued:
+          data_type: datetime
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: date_issued
+          order: 3
+          size:
+            - 0
+        email:
+          data_type: char
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: email
+          order: 6
+          size:
+            - 255
+        reset_token_id:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: reset_token_id
+          order: 1
+          size:
+            - 0
+        token:
+          data_type: char
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 1
+          name: token
+          order: 2
+          size:
+            - 64
+      indices:
+        - fields:
+            - account_id
+          name: reset_tokens_idx_account_id
+          options: []
+          type: NORMAL
+      name: reset_tokens
+      options: []
+      order: 8
+    roles:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - role_id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+      fields:
+        description:
+          data_type: char
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: description
+          order: 3
+          size:
+            - 255
+        role:
+          data_type: char
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: role
+          order: 2
+          size:
+            - 255
+        role_id:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: role_id
+          order: 1
+          size:
+            - 0
+      indices: []
+      name: roles
+      options: []
+      order: 4
+    sessions:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+      fields:
+        expires:
+          data_type: integer
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: expires
+          order: 3
+          size:
+            - 0
+        id:
+          data_type: char
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 72
+        session_data:
+          data_type: mediumtext
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: session_data
+          order: 2
+          size:
+            - 0
+      indices: []
+      name: sessions
+      options: []
+      order: 5
+    skills:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - skill_id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+      fields:
+        skill_data:
+          data_type: mediumtext
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: skill_data
+          order: 4
+          size:
+            - 0
+        skill_id:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: skill_id
+          order: 1
+          size:
+            - 0
+        skill_name:
+          data_type: char
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: skill_name
+          order: 2
+          size:
+            - 32
+        skill_prerequisites:
+          data_type: mediumtext
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: skill_prerequisites
+          order: 5
+          size:
+            - 0
+        skill_requirements:
+          data_type: char
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: skill_requirements
+          order: 3
+          size:
+            - 32
+      indices: []
+      name: skills
+      options: []
+      order: 6
+    skillsets:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - character_id
+            - skill_id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - character_id
+          match_type: ''
+          name: skillsets_fk_character_id
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields:
+            - character_id
+          reference_table: characters
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - skill_id
+          match_type: ''
+          name: skillsets_fk_skill_id
+          on_delete: CASCADE
+          on_update: ''
+          options: []
+          reference_fields:
+            - skill_id
+          reference_table: skills
+          type: FOREIGN KEY
+      fields:
+        character_id:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: character_id
+          order: 1
+          size:
+            - 0
+        item_quantity:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: item_quantity
+          order: 3
+          size:
+            - 0
+        skill_id:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: skill_id
+          order: 2
+          size:
+            - 0
+      indices:
+        - fields:
+            - character_id
+          name: skillsets_idx_character_id
+          options: []
+          type: NORMAL
+        - fields:
+            - skill_id
+          name: skillsets_idx_skill_id
+          options: []
+          type: NORMAL
+      name: skillsets
+      options: []
+      order: 13
+    tile_type_descriptions:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - tile_type_id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - tile_type_id
+          match_type: ''
+          name: tile_type_descriptions_fk_tile_type_id
+          on_delete: CASCADE
+          on_update: ''
+          options: []
+          reference_fields:
+            - tile_type_id
+          reference_table: tile_types
+          type: FOREIGN KEY
+      fields:
+        description:
+          data_type: mediumtext
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: description
+          order: 2
+          size:
+            - 0
+        tile_type_id:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: tile_type_id
+          order: 1
+          size:
+            - 0
+      indices: []
+      name: tile_type_descriptions
+      options: []
+      order: 9
+    tile_types:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - tile_type_id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+      fields:
+        colour_code:
+          data_type: char
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: colour_code
+          order: 3
+          size:
+            - 6
+        move_type:
+          data_type: char
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: move_type
+          order: 4
+          size:
+            - 10
+        name:
+          data_type: char
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: name
+          order: 2
+          size:
+            - 32
+        tile_type_id:
+          data_type: integer
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: tile_type_id
+          order: 1
+          size:
+            - 0
+      indices: []
+      name: tile_types
+      options: []
+      order: 7
+  triggers: {}
+  views: {}
+translator:
+  add_drop_table: 0
+  filename: ~
+  no_comments: 0
+  parser_args:
+    sources:
+      - Account
+      - AccountRole
+      - Character
+      - Inventory
+      - Item
+      - Map
+      - ResetToken
+      - Role
+      - Session
+      - Skill
+      - Skillset
+      - TileType
+      - TileTypeDescription
+  parser_type: SQL::Translator::Parser::DBIx::Class
+  producer_args: {}
+  producer_type: SQL::Translator::Producer::YAML
+  show_warnings: 0
+  trace: 0
+  version: 0.11024

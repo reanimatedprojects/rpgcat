@@ -134,7 +134,14 @@ __PACKAGE__->add_columns(
         set_on_update => 0,
         datetime_undef_if_invalid => 1,
     },
-
+    "date_last_password_change" => {
+        data_type => "datetime",
+        is_nullable => 1,
+        default_value => undef,
+        set_on_create => 0,
+        set_on_update => 0,
+        datetime_undef_if_invalid => 1,
+    },
     "active" => {
         data_type => "int",
         size => 1,

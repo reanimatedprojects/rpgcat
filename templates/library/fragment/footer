@@ -1,8 +1,27 @@
+<section id="footer" class="bg-dark p-3">
+<div class="container">
+<div class="row">
+<div class="col-12 col-md-4 text-light">
+<h5>Footer1</h5>
+
 [% IF c.user_exists %]
-<p>
-    <a href="/account">Account page</a>
-    <a href="/logout">Logout</a>
-</p>
+<ul>
+<li><a href="/account">Account page</a></li>
+<li><a href="/logout">Logout</a></li>
+</ul>
 [% ELSE %]
-<p><a href="/login">Login</a></p>
+<ul>
+<li><a href="/login">Login</a></li>
+</ul>
 [% END %]
+
+</div>
+<div class="col-12 col-md-4 text-light">
+<h5>Footer2</h5>
+</div>
+<div class="col-12 col-md-4 text-light">
+<h5>Footer3</h5>
+</div>
+</div>
+</div>
+</section>

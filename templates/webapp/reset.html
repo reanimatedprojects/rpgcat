@@ -1,0 +1,52 @@
+[% IF account AND account.account_id %]
+<div class="container">
+<div class="row text-sm-left text-md-left">
+
+<div class="col-12 col-md-6 p-3">
+
+<h1>Set a new password</h1>
+
+<form method="post" action="/reset">
+<input type="hidden" name="t" value="[% params.t | html %]">
+<input type="hidden" name="i" value="[% params.i | html %]">
+
+<div class="form-group">
+<label for="passwd1">New password</label>
+<input id="passwd1" class="form-control" type="password" name="new_password" value="" required minlength="6">
+
+<label for="passwd2">New password again</label>
+<input id="passwd2" class="form-control" type="password" name="new_password2" value="" required minlength="6">
+</div>
+
+<button class="btn btn-primary" type="submit">Reset Password</button>
+
+</form>
+</div>
+
+<div class="col-12 col-md-6 p-3">
+
+<p>Password Reset for [% account.email | html %]</p>
+
+<p>It is advisable to make sure your password is strong! At least 8 characters and containing at least one capital letter, lowercase letter and digit.</p>
+
+<p>Remembered your password? <a href="/reset?t=[% params.t %]&i=[% params.i %]&x=1">Cancel and return</a> to login page (your reset token will be cancelled, request another one if you change your mind).</p>
+
+</div>
+</div>
+</div>
+
+[% ELSE # Shouldn't happen, but just in case. %]
+
+<div class="container">
+<div class="row text-left">
+<div class="col p-3">
+
+<h1>Password reset</h1>
+
+<p>Password recovery token not recognised.</p>
+
+<p><a href="/forgot">Request another link</a> or <a href="/login">return to login page</a></p>
+
+</div></div></div>
+[% END %]
+

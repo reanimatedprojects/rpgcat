@@ -6,6 +6,7 @@
     js_files:
     css_files:
     menu:
+        - /about
         - /account
         - /logout
     logged_out_menu:
