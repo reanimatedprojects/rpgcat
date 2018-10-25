@@ -29,7 +29,20 @@ sub map_chain :Chained("/") PathPart("map") CaptureArgs(0) Does('NeedsCharacter'
 sub map_index :Chained("map_chain") PathPart("") Args(0) {
     my ($self, $c) = @_;
 
+    my $character = $c->stash->{ character };
+    my $map_rs = $c->model('DB::Map')->search({
+        map_x => { '>=' => $character->map_x - 2 },
+        map_x => { '<=' => $character->map_x + 2 },
+        map_y => { '>=' => $character->map_y - 2 },
+        map_y => { '<=' => $character->map_y + 2 },
+    }, { order_by => [ 'map_y', 'map_x' ] });
+    my $map = { };
+    while (my $tile = $map_rs->next) {
+        $map->{ $tile->map_x }{ $tile->map_y } = $tile;
+    }
+
     $c->stash(
+        map => $map,
         template => "map/index.html",
     );
 }

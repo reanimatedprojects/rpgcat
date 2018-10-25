@@ -1,5 +1,30 @@
 /* RPGWNN Stylesheet */
 
+.map-column2 {
+    position: fixed;
+    top: 51px;
+    bottom: 0;
+    left: 0;
+    z-index: 990;
+    display: block;
+    padding: 20px;
+    overflow-x: hidden;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    background-color: #f5f5f5;
+    border-right: 1px solid #eee;
+}
+div#map {
+    border: 1px solid red;
+    width: 480px;
+}
+div#map .row {
+    border: 1px solid green;
+}
+div#map .row .col-2 {
+    border: 1px solid blue;
+    height: 90px;
+}
+
 /* ==== Status Messages ========================= */
 .status_message {
     margin-bottom: 10px;

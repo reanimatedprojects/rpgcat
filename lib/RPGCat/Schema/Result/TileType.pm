@@ -25,10 +25,7 @@ __PACKAGE__->add_columns(
 
 __PACKAGE__->set_primary_key("tile_type_id");
 
-__PACKAGE__->has_many( 'maps' => 'RPGCat::Schema::Result::Map', 'tile_type_id' );
-
 __PACKAGE__->has_one( 'description' => 'RPGCat::Schema::Result::TileTypeDescription', 'tile_type_id' );
-
 
 __PACKAGE__->meta->make_immutable;
 1;
