@@ -30,7 +30,7 @@ __PACKAGE__->set_primary_key("map_id");
 
 __PACKAGE__->add_unique_constraint("map_coords" => ["map_x","map_y","map_z"]);
 
-__PACKAGE__->has_one( 'tile_type' => 'RPGCat::Schema::Result::TileType', 'tile_type_id' );
+__PACKAGE__->belongs_to( 'tile_type' => 'RPGCat::Schema::Result::TileType', 'tile_type_id' );
 
 __PACKAGE__->meta->make_immutable;
 1;

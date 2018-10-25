@@ -1,1 +1,30 @@
-<p>A map, my kingdom for a map!</p>
+<div class="container-fluid pt-3 pb-3">
+<div class="row">
+
+<div class="container col-xs-12 col-md-6 map-column" id="map" style='width:480px;'>
+[%- min_mx = character.map_x - 2;
+    max_mx = character.map_x + 2;
+    min_my = character.map_y - 2;
+    max_my = character.map_y + 2;
+
+    map_y = min_my;
+    WHILE map_y <= max_my; -%]
+        <div class="row justify-content-center">
+[%      map_x = min_mx;
+        WHILE map_x <= max_mx;
+            SET tile = map.${map_x}.${map_y}; -%]
+<div class="col-2" style="background-color:#[% tile.tile_type.colour_code %]">[% map_x _ "," _ map_y; " = "; tile.tile_type.name %]</div>
+[%          map_x = map_x + 1;
+        END; %]
+        </div>
+[%-     map_y = map_y + 1;
+    END;
+-%]
+</div>
+
+<div class="col-md">
+<p>You are located at [% character.map_x %], [% character.map_y %], [% character.map_z %].</p>
+</div>
+
+</div>
+</div>
