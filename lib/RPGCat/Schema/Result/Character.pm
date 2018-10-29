@@ -49,11 +49,37 @@ __PACKAGE__->has_one( 'location' => 'RPGCat::Schema::Result::Map',
     }
 );
 
-
 __PACKAGE__->belongs_to( 'account' => 'RPGCat::Schema::Result::Account', 'account_id' );
 __PACKAGE__->might_have( 'inventory' => 'RPGCat::Schema::Result::Inventory', 'character_id' );
 
+sub move {
+    my $self = shift;
+    my $args = $_[0] && ref $_[0] eq 'HASH' ? shift : { @_ };
 
-# You can replace this text with custom code or comments, and it will be preserved on regeneration
+    # check for z movement
+
+
+    # check for x,y movement
+    if (exists $args->{ x } || exists $args->{ y }) {
+        $args->{ x } = 0 unless exists $args->{ x };
+        $args->{ y } = 0 unless exists $args->{ y };
+
+        # This limits movement to 1 tile at a time in any direction.
+        unless ($args->{ x } >= -1 && $args->{ x } <= 1 &&
+                $args->{ y } >= -1 && $args->{ y } <= 1) {
+            return { success => 0, error => "ERR_MOVE_TOO_FAR" };
+        }
+
+        # Moving x/y
+        $self->map_x( $self->map_x + $args->{ x } );
+        $self->map_y( $self->map_y + $args->{ y } );
+        $self->update();
+        return { success => 1 };
+    }
+
+    return { success => 0, error => "ERR_BAD_DIRECTION" };
+}
+
+
 __PACKAGE__->meta->make_immutable;
 1;

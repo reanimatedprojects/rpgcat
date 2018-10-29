@@ -12,6 +12,7 @@ all_from 'lib/RPGCat.pm';
 requires 'Catalyst::Runtime' => '5.90105';
 requires 'Catalyst::Plugin::ConfigLoader';
 requires 'Catalyst::Plugin::Static::Simple';
+requires 'Catalyst::Controller::REST';
 requires 'Catalyst::Action::RenderView';
 requires 'Moose';
 requires 'namespace::autoclean';
@@ -44,6 +45,7 @@ requires 'DBIx::Class::InflateColumn::Serializer';
 requires 'DBIx::Class::Helper::ResultSet::DateMethods1';
 requires 'Catalyst::Helper::Model::DBIC::Schema';
 requires 'MooseX::NonMoose';
+requires 'Types::Standard';
 requires 'DBD::mysql';
 requires 'Digest::SHA256';
 

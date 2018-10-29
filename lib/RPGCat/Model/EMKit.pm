@@ -7,6 +7,7 @@ use base 'Catalyst::Model::Factory';
 
 use RPGCat::EMKit;
 use Moose;
+use Types::Standard qw(HashRef Maybe Str);
 
 =head1 NAME
 
@@ -29,15 +30,103 @@ has 'EmailInstance' => (
     isa => 'RPGCat::EMKit',
 );
 
+=head1 ATTRIBUTES
+
+=over 4
+
+The following are properties that this model provides, only the
+from_email is required. The others have reasonable defaults.
+
+=over 4
+
+=item * from_email - the default From address
+
+=item * from_name - the default From name
+
+=item * default_transport - which class to use to send email
+
+=item * default_transport_args - any extra args for the transport
+
+=item * template_path - __PACKAGE__->path_to('emails')->stringify
+
+=back
+
+These would normally be defined in your application module as follows:
+
+    __PACKAGE__->config(
+        'Model::EMKit' => {
+            default_from_email => 'rpgcat@localhost',
+            default_from_name => 'RPGCat',
+            default_transport => 'Email::Sender::Transport::Sendmail',
+            default_transport_args => undef,
+            template_path => __PACKAGE__->path_to('emails')->stringify,
+        },
+    );
+
+The email transport and args can also be defined in environment variables
+
+    EMAIL_SENDER_TRANSPORT=SMTP
+    EMAIL_SENDER_TRANSPORT_HOST=127.0.0.1
+    EMAIL_SENDER_TRANSPORT_PORT=25
+
+Another option is to define these in the rpgcat.yaml
+
+    Model::EMKit:
+        default_transport: Email::Sender::Transport::SMTP
+        default_transport_args:
+            host: 127.0.0.1
+            port: 25
+
+=head2 default_from
+
+This should be just an email address. Ideally one that is able
+to receive replies so you get any bounces that may be generated.
+
+=cut
+
 has 'from_email' => (
     is => 'ro',
-    isa => 'Str',
+    isa => Str,
     default => 'rpgcat@localhost',
 );
+
 has 'from_name' => (
     is => 'ro',
-    isa => 'Str',
+    isa => Str,
     default => 'RPGCat',
+);
+
+=head2 default_transport
+
+You will almost definitely want to use something that isn't
+Email::Sender::Transport::Test during normal use otherwise
+you won't get any emails!
+
+=cut
+
+has 'default_transport' => (
+    is => 'rw',
+    isa => Str,
+    default => 'Email::Sender::Transport::Test',
+);
+
+has 'default_transport_args' => (
+    is => 'rw',
+    isa => Maybe[HashRef],
+    default => undef,
+);
+
+=head2 template_path
+
+The base directory where the Email::MIME::Kit template directories
+are to be found.
+
+=cut
+
+has 'template_path' => (
+    is => 'rw',
+    isa => Str,
+    default => '.',
 );
 
 __PACKAGE__->config( class => "RPGCat::Model::EMKit" );
@@ -53,9 +142,11 @@ object that hasn't already been referenced.
 sub ACCEPT_CONTEXT {
     my ($self, $c, @args) = @_;
     my $emkit = RPGCat::EMKit->new(
-        template_path => $c->path_to('templates', 'email')->stringify,
+        template_path => $self->template_path,
         default_from_name => $self->from_name,
         default_from_email => $self->from_email,
+        transport_class => $self->default_transport,
+        transport_args => $self->default_transport_args,
         @args );
 
     return $emkit;

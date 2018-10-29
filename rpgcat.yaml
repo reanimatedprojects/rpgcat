@@ -1,6 +1,5 @@
 Model::EMKit:
-    from_email: rpgcat@example.net
-    from_name: RPGCat
+    from_email: rpgcat@tree.bocks.com
 
 Model::DB:
     connect_info:
