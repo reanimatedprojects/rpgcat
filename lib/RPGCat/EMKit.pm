@@ -66,6 +66,7 @@ sub new {
         transport_args  => ($extra_args->{ transport_args } || {}),
         _template_path  => undef,
         _source         => undef,
+        _error          => "",
         _default_args   => {
             from_email      => $extra_args->{ default_from_email },
             from_name       => $extra_args->{ default_from_name },
@@ -212,12 +213,57 @@ sub send {
         push @recipients, $headers{$k} if ($k =~ /^(To|Cc|Bcc)$/i);
     }
 
-    Email::Sender::Simple->send($email, {
+    # Doing this here because Email::Sender::Simple's code isn't quite
+    # right. I think it's because Email::Address->parse now returns
+    # an array rather than a single scalar.
+
+    # This is required for Transport::SMTP to work.
+    # Transport::Sendmail isn't quite so fussy.
+
+    # Strip any non-address part of the To addresses
+    my @send_to = ();
+    foreach my $t (@recipients) {
+        my @eap_to = Email::Address->parse($t);
+        push @send_to, map { $_->address } grep { defined } @eap_to;
+    }
+
+    # Strip any non-address part of the From address
+    my @eap_from = Email::Address->parse($sender);
+    if (@eap_from) {
+        $sender = $ea_from[0]->address;
+    }
+
+    my $args = {
+        to => \@send_to,
         from => $sender,
-        to => \@recipients,
         transport => $transport,
-    });
-    return $self;
+    };
+
+    my $res = eval {
+        Email::Sender::Simple->send_email($email, $args);
+    };
+    if ($@) {
+        # Failed to send
+        $self->error(@_);
+        return undef;
+    }
+    $self->error("");
+    return 1;
+}
+
+=head2 error( [value] )
+
+Get/Set the error sending the message.
+
+=cut
+
+sub error {
+    my $self = shift;
+    my $value = shift;
+    if (defined $value) {
+        $self->{ _error } = $value;
+    }
+    return $self->{ _error };
 }
 
 =head1 INTERNAL METHODS

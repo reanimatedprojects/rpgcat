@@ -45,6 +45,7 @@ requires 'DBIx::Class::InflateColumn::Serializer';
 requires 'DBIx::Class::Helper::ResultSet::DateMethods1';
 requires 'Catalyst::Helper::Model::DBIC::Schema';
 requires 'MooseX::NonMoose';
+requires 'Types::Standard';
 requires 'DBD::mysql';
 requires 'Digest::SHA256';
 
