@@ -64,7 +64,7 @@ sub new {
             "Email::Sender::Transport::Test"),
 
         transport_args  => ($extra_args->{ transport_args } || {}),
-        _template_path  => undef,
+        _template_path  => ($extra_args->{ template_path } || undef),
         _source         => undef,
         _error          => "",
         _default_args   => {
@@ -72,6 +72,12 @@ sub new {
             from_name       => $extra_args->{ default_from_name },
         },
     };
+
+    delete $extra_args->{ transport_class }
+        if exists $extra_args->{ transport_class };
+    delete $extra_args->{ transport_args }
+        if exists $extra_args->{ transport_args };
+
     # If this isn't defined, things will likely go wrong!
     if (exists $extra_args->{ template_path }) {
         $self->{ _template_path } = delete $extra_args->{ template_path };
@@ -230,7 +236,7 @@ sub send {
     # Strip any non-address part of the From address
     my @eap_from = Email::Address->parse($sender);
     if (@eap_from) {
-        $sender = $ea_from[0]->address;
+        $sender = $eap_from[0]->address;
     }
 
     my $args = {
@@ -244,7 +250,7 @@ sub send {
     };
     if ($@) {
         # Failed to send
-        $self->error(@_);
+        $self->error($@);
         return undef;
     }
     $self->error("");

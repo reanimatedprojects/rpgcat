@@ -136,6 +136,12 @@ __PACKAGE__->config(
             __PACKAGE__->config->{ home } . '/data/pages.yaml',
         ),
     },
+
+    'Model::EMKit' => {
+        default_from_email => 'rpgcat@localhost',
+        default_from_name => 'RPGCat',
+        template_path => __PACKAGE__->path_to('templates', 'email')->stringify,
+    },
 );
 
 # Start the application
