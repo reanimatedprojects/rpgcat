@@ -1,0 +1,24 @@
+<div class="container col-xs-12 col-md-6 map-column" id="map" style='width:480px;'>
+[%- min_mx = character.map_x - 2;
+    max_mx = character.map_x + 2;
+    min_my = character.map_y - 2;
+    max_my = character.map_y + 2;
+
+    map_y = min_my;
+    WHILE map_y <= max_my; -%]
+        <div class="row justify-content-center">
+[%      map_x = min_mx;
+        WHILE map_x <= max_mx;
+            SET tile = map.${map_x}.${map_y}; -%]
+<div class="col-2" style="background-color:#[% tile.tile_type.colour_code %]">[% map_x _ "," _ map_y; " = "; tile.tile_type.name;
+    SET grid_x = map_x - character.map_x;
+    SET grid_y = map_y - character.map_y;
+
+    IF tile.tile_type_id AND grid_x >= -1 AND grid_x <= 1 AND grid_y >= -1 AND grid_y <= 1 AND NOT (grid_x == 0 AND grid_y == 0) %]<button class="move" data-x="[% map_x - character.map_x %]" data-y="[% map_y - character.map_y %]">Move</button>[% END %] </div>
+[%          map_x = map_x + 1;
+        END; %]
+        </div>
+[%-     map_y = map_y + 1;
+    END;
+-%]
+</div>

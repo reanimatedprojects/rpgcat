@@ -12,6 +12,7 @@ all_from 'lib/RPGCat.pm';
 requires 'Catalyst::Runtime' => '5.90105';
 requires 'Catalyst::Plugin::ConfigLoader';
 requires 'Catalyst::Plugin::Static::Simple';
+requires 'Catalyst::Controller::REST';
 requires 'Catalyst::Action::RenderView';
 requires 'Moose';
 requires 'namespace::autoclean';
