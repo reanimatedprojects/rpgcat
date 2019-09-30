@@ -24,8 +24,7 @@ This next command should output 1.39 (or something more recent)
 
     perl -MCatalyst::Devel -e 'print "$Catalyst::Devel::VERSION\n";'
 
-In github, fork the main rpgwnn/rpgcat repository into your personal
-repository and clone your repository and install any extra Perl dependencies.
+In GitHub, fork the main reanimatedprojects/rpgcat repository into your personal repository and clone your repository and install any extra Perl dependencies.
 
     cd ~
     git clone git@github.com:YOURUSER/rpgcat.git
@@ -35,7 +34,7 @@ repository and clone your repository and install any extra Perl dependencies.
 To keep your version in sync with the main repository, configure the
 upstream repository
 
-    git remote add upstream https://github.com/rpgwnn/rpgcat.git
+    git remote add upstream https://github.com/reanimatedprojects/rpgcat.git
 
 and merge in changes from upstream/master. Full instructions can be
 found at https://help.github.com/articles/syncing-a-fork/
