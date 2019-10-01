@@ -10,14 +10,13 @@ actual content (the map for example) is left for you to provide!
 
 ## Installation
 
-This works best if you install a local version of Perl and all
-associated modules. This can be done as follows:
+This works best if you install a local version of Perl and all associated modules. This can be done using Perl::Build in one of the ways described at https://metacpan.org/pod/Perl::Build
 
-    curl -L https://install.perlbrew.pl | bash
-    source ~/perl5/perlbrew/etc/bashrc
-    perlbrew install perl-5.20.1
-    perlbrew switch perl-5.20.1
-    perlbrew install-cpanm
+If you already have a working cpanm and can install Perl::Build as a system Perl module, opt for the CLI interface. Alternatively (and this would be the recommended way), use the CLI interface without dependencies method.
+
+We have included a script in this repository which will do all the hard work for you. It could take a while to build Perl and all the required modules - it's also configured for Perl 5.24.1 - if you would like a more recent version, please edit the script and change the variable PERLVERSION
+
+    sh build-perl-5.24.1.sh
     cpanm Catalyst::Devel
 
 This next command should output 1.39 (or something more recent)
