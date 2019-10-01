@@ -15,7 +15,7 @@ my $pid_file = $ENV{HOME} . '/rpgcat.pid';
 # nginx fastcgi over socket
 my $socket   = $app_home . '/rpgcat.socket';
 # Apache fastcgi over tcp
-# $socket = "127.0.0.1:3000";
+# $socket = "127.0.0.1:3016";
 # Default is over file-based socket, set the SOCKET env to change to TCP
 if ($ENV{SOCKET}) {
     $socket = $ENV{SOCKET};
