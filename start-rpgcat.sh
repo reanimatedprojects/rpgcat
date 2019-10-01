@@ -25,5 +25,5 @@ then
     exit
 fi
 
-script/rpgcat_server.pl -r --fork -d -p 3000 2>&1
+script/rpgcat_server.pl -r --fork -d -p 3016 2>&1
 
