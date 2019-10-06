@@ -50,6 +50,7 @@ requires 'Email::Sender::Simple';
 requires 'Email::MIME::Kit::Renderer::TT';
 
 requires 'HTML::FormHandler';
+requires 'Git';
 
 requires 'Hashids';
 

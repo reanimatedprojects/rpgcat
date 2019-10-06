@@ -34,6 +34,15 @@ extends 'Catalyst';
 
 our $VERSION = '0.01';
 
+use Git;
+
+my $repo = eval { Git->repository(); };
+if ($repo && !$@) {
+    __PACKAGE__->config(
+        git_version => $repo->command("rev-parse", "--short", "HEAD")
+    );
+}
+
 use YAML;
 
 use DBIx::Class::DeploymentHandler;

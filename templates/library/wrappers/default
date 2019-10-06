@@ -36,6 +36,8 @@
 
 [% content %]
 
+[% IF c.config.git_version %]<p class="text-right small">Build id: [% c.config.git_version %]</p>[% END -%]
+
 </div>
 [% PROCESS "fragment/footer" UNLESS page_config.skip_footer; %]
 
