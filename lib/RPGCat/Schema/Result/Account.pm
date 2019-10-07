@@ -146,7 +146,7 @@ __PACKAGE__->add_columns(
         data_type => "int",
         size => 1,
         is_nullable => 0,
-        default_Value => 1,
+        default_value => 1,
     },
 );
 
