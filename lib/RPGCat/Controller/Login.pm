@@ -119,7 +119,9 @@ sub signup :Path("/signup") Args(0) {
             password => $password,
         });
     };
-    if ($@ || (! defined $account)) {
+    if ($@ || (! defined $account) || $account->account_id == 0) {
+
+        $c->log->debug("account create error: $@");
 
         # An account most likely already exists with this email address
 
@@ -132,9 +134,9 @@ sub signup :Path("/signup") Args(0) {
         my $exists = eval {
             $c->model('DB::Account')->search({ email => $email });
         };
-        if ($@ || ! defined $exists) {
+        if ($@ || ! defined $exists || $exists->count == 0) {
             # Something went seriously wrong, we should tell the user.
-            $c->log->debug("Couldn't create account for $email, but couldn't find one either");
+            $c->log->debug("Couldn't create account for $email, but couldn't find one either: $@");
 
             $c->response->redirect(
                 $c->uri_for("/login", {
@@ -147,6 +149,9 @@ sub signup :Path("/signup") Args(0) {
 
         } else {
             my $account = $exists->single();
+            # In theory account shouldn't be empty otherwise
+            # the if () would have caught it via $exists->count == 0
+            # Perhaps worth adding some more checks here just in case?
 
             my $emkit = $c->model('EMKit')
                 ->template("verification-exists.mkit", {
