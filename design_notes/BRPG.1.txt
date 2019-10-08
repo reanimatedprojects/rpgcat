@@ -1,0 +1,122 @@
+﻿BRPG - Basic RPG
+
+
+Functionality
+
+Log in + char creation
+Move around map
+Basic player interactions
+Basic items
+Basic skills
+Basic NPC/Quest Interaction
+
+
+Death Mechanic
+
+When  player has 0hp they can only use one button "revive", costing 5ap it transports them to a designated tile (revivespot) based on race.
+
+
+Map Tiles
+
+Grass - passable, can find stick 20%, stone 20% and gold coin 10%
+Forest - passable, can find healing herb 10%, stick 30%, gold coin 20%
+Stream - passable (double ap cost), can find stone 50%
+Mountain - impassable world border
+
+
+Map Items
+
+Fist (unseen and non discardable) - 1 damage 20% base
+Sword - 2 damage 20% base
+Bow - 3 damage 20% base, costs 1 arrow per shot
+Stone - No use
+Stick - No use
+Arrow - Used as ammo for shooting, can be crafted from 1 stick and 1 stone (makes 2) and 1ap, stacks
+Healing Salve - Restores 5hp, can be crafted from 2 healing herbs and 1ap, grants 2exp when used on wounded player/npc (not self), 25% chance 1 exp granted for crafting
+Healing Herb - Restores 2hp, stacks, grants 1exp when used on wounded player/npc (not self)
+Gold Coin - No use, stacks
+
+
+
+NPCs
+
+Wolf - 10hp, 2 damage 30% chance, exp per kill (2), drops 1gc per kills
+Deer - 5hp, no damage, exp per kill (1), can start wounded (1hp)
+Bob (Trader) - Cannot be attacked, offers items in exchange for gold.  Also offers "training quest"
+
+
+Skills (each costs 5 exp)
+
+Sword Swinging - 10% bonus to hit with sword
+-Sword Striking - 15% bonus to hit with sword
+-Sword Charge - Special action, 1/2 hit chance double damage.
+
+Bow Shooting - 10% hit bonus
+-Fletching - Allows arrow crafting
+-Aimed Shot - Special action, costs 2ap but doubles chance to hit
+
+Salve Making - Allows salve crafting
+-Healing - Increases salve heal amount bt 2
+-Herb Hunting - Can use "herb hunt" option in forests (a new button).
+
+-Specialrewardskill stamina - Grants +5ap max and +5hp max
+
+
+Base character info
+
+20ap, 15hp, 10 inventory slots, option to "give", "attack", "speak", "search" and "drop"
+1 ap granted per 5 mins
+
+
+Quests
+
+Training
+Visit each type of tile once, item of choice (Sword, bow and 5 arrows or 10 healing herbs)
+
+Hunt A Deer (only gettable after training done)
+Kill 1 deer, reward specialrewardskill stamina
+
+
+
+Trader
+
+Sword - 5 gold coins
+Bow - 5 gold coins
+Arrow - 1 gold coin for 2
+Healing salve- 2 gold coins
+
+
+
+
+Char creation
+
+Name - Shartak style
+Gender - M/F
+Race - Human (no changes), Elf (+4% bow accuracy, -5% sword accuracy), Dwarf (+5% sword accuracy, -4% bow accuracy) or Pixie (+1 salve healing, -3 max hp)
+Starting skill - Sword Swinging, Bow Shooting or Salve Making
+
+
+Herb hunt action
+
+Costs same ap (1) as search.  Gives a 50% herb find rate, 0% anything else though.
+
+
+
+Some maths
+
+Sword 0 skill 0.4 damage per ap (dwarf 0.5, elf 0.3)
+Sword 1 skill 0.6 damage per ap (dwarf 0.8, elf 0.5)
+Sword 2 skill 0.9 damage per ap (dwarf 1, elf 0.8)
+
+Bow 0 skill 0.6 damage per ap (dwarf 0.48, elf 0.72)
+Bow 1 skill 0.9 damage per ap (dwarf 0.78, elf 1.02)
+
+
+
+
+
+
+The purpose of this little game
+
+It showcases a lot of features, especially if we later add some basic mods to complement it (extra tiles, an extra npc or item, maybe another skill.
+If this idea is approved I will spend some more time on the maths and balance (this is just a rough idea).  We have an artist who can do icons and tiles.
