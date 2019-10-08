@@ -1,0 +1,7 @@
+# Uncomment and edit the following to reflect your email address
+#MAILTO=you@example.org
+
+# On reboot, this will start up the RPGCat server process
+@reboot  ( $HOME/local/exec $HOME/rpgcat/start-rpgcat.sh ) &
+
+
