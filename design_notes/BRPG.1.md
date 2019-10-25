@@ -1,6 +1,6 @@
 #BRPG - Basic RPG
 
-##Introductoin
+##Introduction
 
 Basic Role Playing Game (BRPG) is the first landmark game for the creation of RPGWNN.  It's aim is to produce a simple working game that others may build onto using the RPGWNN codebase.
 
