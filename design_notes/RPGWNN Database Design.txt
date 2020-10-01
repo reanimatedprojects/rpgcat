@@ -52,7 +52,9 @@ Message ~~~~ CHAR(256)
 Message_X -- SMALLINT
 Message_Y ~~ SMALLINT
 Message_Z -- SMALLINT
+Timestamp ~~ DATE
 
 Messages_Linker
 Message_ID --  MEDIUMINT (Linked to Messages Table)
 Character_ID ~ MEDIUMINT (Linked to Characters Table)
+
