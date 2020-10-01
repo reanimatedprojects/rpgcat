@@ -8,7 +8,7 @@ Current_Health ~~~ SMALLINT
 Current_Exp ~~~~~~ SMALLINT
 Max_AP ----------- SMALLINT
 Current_AP ~~~~~~~ SMALLINT
-
+New_Messages ----- BOOLEAN
 
 Descriptions
 Character_ID ----- INT
@@ -46,3 +46,13 @@ Skillsets
 Character_ID - MEDIUMINT (Linked to Character Table)
 Skill_ID ~~~~~ SMALLINT (Linked to Skill Table)
 
+Messages
+Message_ID - MEDIUMINT (Primary Key)
+Message ~~~~ CHAR(256)
+Message_X -- SMALLINT
+Message_Y ~~ SMALLINT
+Message_Z -- SMALLINT
+
+Messages_Linker
+Message_ID --  MEDIUMINT (Linked to Messages Table)
+Character_ID ~ MEDIUMINT (Linked to Characters Table)
